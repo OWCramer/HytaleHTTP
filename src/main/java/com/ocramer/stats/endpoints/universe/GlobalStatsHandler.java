@@ -1,4 +1,4 @@
-package com.ocramer.stats.handlers;
+package com.ocramer.stats.endpoints.universe;
 
 import com.google.gson.JsonArray;
 import com.hypixel.hytale.server.core.universe.world.World;

@@ -3,8 +3,8 @@ package com.ocramer.stats;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import com.hypixel.hytale.server.core.universe.Universe;
-import com.ocramer.stats.handlers.GlobalStatsHandler;
-import com.ocramer.stats.handlers.PlayerInventoryHandler;
+import com.ocramer.stats.endpoints.player.PlayerHandler;
+import com.ocramer.stats.endpoints.universe.GlobalStatsHandler;
 import com.ocramer.stats.util.ZipItemRegistry;
 import com.sun.net.httpserver.HttpServer;
 
@@ -34,7 +34,7 @@ public class StatsPlugin extends JavaPlugin {
             // Start the server on port 8080
             server = HttpServer.create(new InetSocketAddress(8080), 0);
             server.createContext("/universe", new GlobalStatsHandler(this));
-            server.createContext("/player", new PlayerInventoryHandler(this));
+            server.createContext("/player", new PlayerHandler(this));
             server.setExecutor(null); // creates a default executor
             server.start();
 
