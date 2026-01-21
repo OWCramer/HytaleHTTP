@@ -10,6 +10,7 @@ import com.ocramer.stats.util.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
 import java.util.Base64;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -94,12 +95,17 @@ public class PlayerInventory {
 
     private String getImage(String itemIcon, String itemId) {
         try {
-            String universePath = plugin.universe.getPath().toAbsolutePath().toString().replace("/universe", "");
+            String universePath = plugin.universe.getPath().toAbsolutePath().toString().replace(File.separator + "universe", "");
 
-            File assetsZipFile = new File(universePath + "/assets.zip"); // dynamic path
+            File assetsZipFile = new File(universePath + File.separator + "assets.zip"); // dynamic path
+
+            if (!assetsZipFile.exists()) {
+                assetsZipFile = new File(universePath + File.separator + ".." + File.separator + ".." + File.separator + ".." + File.separator + "install" + File.separator + "release" + File.separator + "package" + File.separator + "game" + File.separator + "latest" + File.separator + "Assets.zip");
+            }
+
             ZipFile zip = new ZipFile(assetsZipFile);
 
-            ZipEntry entry = zip.getEntry("Common/" + itemIcon);
+            ZipEntry entry = zip.getEntry("Common" + File.separator + itemIcon);
             byte[] bytes = null;
             if (entry != null) {
                 try (InputStream in = zip.getInputStream(entry)) {
