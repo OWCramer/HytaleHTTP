@@ -99,9 +99,9 @@ public class PlayerInventory {
 
             File assetsZipFile = new File(universePath + File.separator + "assets.zip"); // dynamic path
 
-            if (!assetsZipFile.exists()) {
-                assetsZipFile = new File(universePath + File.separator + ".." + File.separator + ".." + File.separator + ".." + File.separator + "install" + File.separator + "release" + File.separator + "package" + File.separator + "game" + File.separator + "latest" + File.separator + "Assets.zip");
-            }
+//            if (!assetsZipFile.exists()) {
+//                assetsZipFile = new File(universePath + File.separator + ".." + File.separator + ".." + File.separator + ".." + File.separator + "install" + File.separator + "release" + File.separator + "package" + File.separator + "game" + File.separator + "latest" + File.separator + "Assets.zip");
+//            }
 
             ZipFile zip = new ZipFile(assetsZipFile);
 
