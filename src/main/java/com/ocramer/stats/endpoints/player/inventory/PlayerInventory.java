@@ -1,4 +1,4 @@
-package com.ocramer.stats.handlers;
+package com.ocramer.stats.endpoints.player.inventory;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -6,68 +6,24 @@ import com.hypixel.hytale.server.core.inventory.Inventory;
 import com.hypixel.hytale.server.core.inventory.container.ItemContainer;
 import com.ocramer.stats.StatsPlugin;
 import com.ocramer.stats.util.*;
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-public class PlayerInventoryHandler implements HttpHandler {
+public class PlayerInventory {
 
     private final StatsPlugin plugin;
-    private final PlayerLookup playerLookup;
 
-    public PlayerInventoryHandler(StatsPlugin plugin) {
+    public PlayerInventory(StatsPlugin plugin) {
         this.plugin = plugin;
-        this.playerLookup = new PlayerLookup(plugin);
-    }
-
-    @Override
-    public void handle(HttpExchange exchange) throws IOException {
-        String[] segments = exchange.getRequestURI().getPath().split("/");
-
-        String response;
-        String playerName = segments[2];
-        String query = segments[3];
-
-        PlayerData playerData;
-        try {
-            playerData = playerLookup.getAsync(playerName).get(5, TimeUnit.SECONDS);
-            if (playerData == null) {
-                sendResponse(exchange, String.format("{\"error\":\"Player %s not found\"}", playerName));
-                return;
-            }
-        } catch (Exception e) {
-            sendResponse(exchange, "{\"error\":\"Lookup timed out or failed\"}");
-            return;
-        }
-
-        switch (query.toLowerCase()) {
-            case "inventory":
-                response = getInventoryJson(playerData);
-                sendResponse(exchange, response);
-                break;
-            case "world":
-                response = "{\"world\":\"" + plugin.universe.getWorld(UUID.fromString(playerName)).getName() + "\"}";
-                sendResponse(exchange, response);
-                break;
-            default:
-                response = "{\"error\":\"Invalid query parameter\"}";
-                sendResponse(exchange, response);
-                break;
-        }
     }
 
 
-    private String getInventoryJson(PlayerData data) {
+    public String getInventoryJson(PlayerData data) {
         try {
             JsonObject inventoryJson = new JsonObject();
 
@@ -166,18 +122,5 @@ public class PlayerInventoryHandler implements HttpHandler {
         }
 
         return null;
-    }
-
-    private void sendResponse(HttpExchange exchange, String response) throws IOException {
-        byte[] bytes = response.getBytes(StandardCharsets.UTF_8);
-
-        exchange.getResponseHeaders().set("Content-Type", "application/json");
-        exchange.getResponseHeaders().set("Access-Control-Allow-Origin", "*");
-
-        exchange.sendResponseHeaders(200, bytes.length);
-
-        try (OutputStream os = exchange.getResponseBody()) {
-            os.write(bytes);
-        }
     }
 }
