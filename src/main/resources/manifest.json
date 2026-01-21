@@ -1,0 +1,20 @@
+{
+  "Group": "com.ocramer",
+  "Name": "HTTPStats",
+  "Version": "${version}",
+  "Description": "Expose Hytale server stats over HTTP",
+  "Authors": [
+    {
+      "Name": "Owen Cramer",
+      "Email": "me@ocramer.com",
+      "Url": "https://ocramer.com"
+    }
+  ],
+  "Website": "https://ocramer.com",
+  "ServerVersion": "*",
+  "Dependencies": {},
+  "OptionalDependencies": {},
+  "DisabledByDefault": false,
+  "IncludesAssetPack": false,
+  "Main": "com.ocramer.stats.StatsPlugin"
+}
